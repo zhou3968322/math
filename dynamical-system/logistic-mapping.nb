@@ -1,0 +1,17 @@
+interval = 0.001;
+results = Reverse[Transpose[Table[
+   logisticValues = 
+    Table[Nest[a # (1 - #) &, RandomReal[], 2000], {1000}];
+   intervals = Table[i, {i, 0, 1 - interval, interval}];
+   result = BinCounts[logisticValues, {0, 1, interval}]/1000;
+   Log[result + 0.001]
+   , {a, 2.9, 4, 0.001}]]];
+gradraft = 
+ArrayPlot[70 + 10 results, FrameLabel -> {"x(T)", "\[Mu]"}, 
+ FrameTicks -> {Table[{i, N[(i - 1)/(Length[results] - 1)]}, {i, 
+     0.1*(Length[results] - 1) + 1, 
+     0.9 (Length[results] - 1) + 1, (Length[results] - 1)/4}], 
+   Table[{i, 
+     N[2.9 + (i - 1)*(4 - 2.9)/(Length[results[[1]]] - 1), 
+      1]}, {i, (3 - 2.9) (Length[results[[1]]] - 1)/(4 - 2.9) + 1, 
+     Length[results[[1]]], (Length[results[[1]]] - 1)/5}]}]
